@@ -1,0 +1,59 @@
+% 論文の構成
+% 表紙
+% 概要
+% 目次
+% 第1章（緒論）
+% 第2章（システム構成）
+% 第3章（モデル予測制御 ー 集中型最適化の場合 ー）
+% 第4章（モデル予測制御 ー 分散型最適化の場合 ー）
+% 第5章（結論）
+% 謝辞
+% 参考文献
+% 付録
+
+%卒業論文用雛形
+\documentclass[a4j,12pt,oneside,openany]{jsbook}
+% 英語なら以下を使う．
+%\documentclass[a4j,12pt,oneside,openany,english]{jsbook}
+
+\input{begin}
+
+\renewcommand{\include}[1]{}
+\renewcommand\documentclass[2][]{}
+
+% 表紙
+\input{cover}
+
+\frontmatter
+
+% 概要
+\input{abstract}
+
+% 目次
+\tableofcontents
+
+\mainmatter
+\input{chapter1}
+\input{chapter2}
+\input{chapter3}
+\input{chapter4}
+\input{chapter5}
+
+% 謝辞
+\input{acknowledgement}
+
+% 参考文献
+% 1. 直接書く
+\begin{thebibliography}{99}
+\bibitem{a} Reference 1
+\bibitem{b} Reference 2
+\end{thebibliography}
+% % 2. bibtexを使う
+% \bibliography{myjunsrt}
+% \bibliography{refs}
+
+% 付録
+\input{appendix}
+
+\input{end}
+

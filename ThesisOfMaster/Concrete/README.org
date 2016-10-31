@@ -1,0 +1,64 @@
+* ファイル生成について
+全体をまとめたpdfファイルを出力するときはparent.texをコンパイルすること．
+
+* 論文の構成
+** 表紙
+** 概要
+** 目次
+** 第1章（緒論）
+研究背景と目的．論文の構成．
+現状の業務状態を書く．
+** 第2章（システム構成）
+配車問題とは何か．
+タクシー側の要求を書く．
+システム構成の仕方を書く（思想設計）．
+最近話題のニューラルネットワークを入れてみたことを言う．
+** 第3章（モデル予測制御 ー 集中型最適化の場合 ー）
+M2梅雨ごろに搭載した前のバージョンの定式化を書く
+** 第4章（モデル予測制御 ー 分散型最適化の場合 ー）
+これから考える
+** 第5章（結論）
+まとめ
+** 謝辞
+** 参考文献
+** 付録
+* フォルダ構成
+** README.org
+  このフォルダの構成を説明するファイル．
+  構造は
+  [[http://www.ketsuago.com/entry/2016/01/30/191934][ここ]]
+  を参考にした．
+** parent.tex
+  最終的なタイプセットを行うファイル．bibliographyもここに書く．
+** begin.tex
+  プリアンブルと\begin{document}
+** end.tex
+  \end{document}
+** cover.tex
+  表紙
+** abstract.tex
+  目次
+** chapter1.tex
+   第1章
+** chapter2.tex
+  第2章
+** chapter3.tex
+  第3章
+** chapter4.tex
+  第4章
+** chapter5.tex
+  第5章
+** acknowledgement.tex
+  謝辞
+** appendix.tex
+  付録
+** Graphics/
+  図
+** book2report.sty
+jsbook を report っぽくするスタイル．
+** thesis.sty
+定理環境の定義や英語への対応を行うスタイル．
+** myjunsrt.bst
+卒論・修論用の bibtex スタイルファイル．
+** cleanAll.sh
+  .texファイルと.orgファイルと.styファイルと.bstファイルと.shファイルとGraphicsフォルダ以外を削除するスクリプト

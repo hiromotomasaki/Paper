@@ -1,0 +1,9 @@
+# .gitignoreの書き方
+# http://qiita.com/anqooqie/items/110957797b3d5280c44f
+
+# 無視するファイル
+*.o
+*.d
+*~
+
+# 無視されないファイルを明示的に指定
