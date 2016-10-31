@@ -5,5 +5,12 @@
 *.o
 *.d
 *~
+*.out
+*.aux
+*.dvi
+*.fdb_latexmk
+*.log
+*.synctex.gz
+*.toc
 
 # 無視されないファイルを明示的に指定
