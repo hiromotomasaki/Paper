@@ -10,8 +10,125 @@
  \label{sec:3_1}
  \par
  あ
- \section{結言}
+ \section{あ}
  \label{sec:3_2}
+ \par
+時刻$k$のときの各領域（セル）$i(i=1, 2, \ldots , N)$での空車数を$x_i(k)$とおく．時間区間$[k,\ k+1)$の間に，領域$i$で実車になるタクシー数を$s_i(k)$，空車になるタクシー数を$e_i(k)$とおく．入力として，時間区間$[k,\ k+1)$に間に領域$i$から$j$へ移動する空車数$u_{i,j}(k)$とおく．ここで，$u_{i,i}(k)$は領域$i$にとどまる空車数である．すると各領域の空車数のダイナミクスは，
+\begin{equation}  \label{eqn:system}
+x_i(k+1)=x_i(k)-s_i(k)+e_i(k)+\sum_{j=1}^{N}\bigg (u_{j,i}(k)-u_{i,j}(k) \bigg)
+\end{equation}
+となる．
+
+$d_i(k)$を時刻$k$のときの領域$i$で発生する需要とおく．
+\begin{equation} \label{eqn:d}
+d_i(k+1)=d_i(k)-s_i(k)+p_i(k)
+\end{equation}
+である．ただし，$p_i(k)$は時間区間$[k,\ k+1)$の間で新たに発生する需要であり，実データから予想される．制御理論的に言えば，外乱のようなもの．
+時間区間$[k,k+1)$に間に空車になるタクシー数$e_i(k)$は
+\begin{equation} \label{eqn:e_i}
+e_i(k)=\beta_{i}r(k)
+\end{equation}
+ただし，$r(k)$は時刻$k$のときの実車の総数で，$\beta_{i}$は領域$i$で実車全体の中で領域$i$で空車になる割合である．つまり，時刻$k$のときの実車の中から$\beta_{i}r(k)$だけが時間区間$[k,\ k+1)$の間で領域$i$で空車になることを表し，$\beta_i$は実データから推定される．
+実車の総数$r(k)$は，式(\ref{eqn:e_i})を用いると
+\begin{eqnarray}
+r(k+1) &=& r(k)+\sum_{i=1}^{N}\bigg( s_i(k)-e_i(k)\bigg) \nonumber \\
+	&=& r(k)+\sum_{i=1}^{N}\bigg( s_i(k)-\beta_i r(k)\bigg) \nonumber  \\
+	&=& \bigg( 1-\sum_{i=1}^{N}\beta_i\bigg) r(k)+\sum_{i=1}^{N} s_i(k) \label{eqn:r}
+\end{eqnarray}
+である．ここで，入力に関する制約として，各領域$i$について
+\begin{equation} \label{eqn:con}
+x_i(k)=\sum_{j=1}^{N}u_{i,j}(k)
+\end{equation}
+を与える．このことは，各領域において時刻$k$での空車をどこに移動させるかを決定し，それに沿って，空車が移動すると仮定していることになる．空車は制御入力に従って移動してから乗車できると仮定する．
+
+このように入力（移動する空車数））を与えると，式(\ref{eqn:system}), (\ref{eqn:e_i}), (\ref{eqn:con})からシステムダイナミクスは
+\begin{equation}  \label{eqn:simple_system}
+x_i(k+1)=\beta_i r(k)-s_i(k)+\sum_{j=1}^{N} u_{j,i}(k)
+\end{equation}
+となる．ここで，式(\ref{eqn:r}), (\ref{eqn:con}), (\ref{eqn:simple_system})から
+\begin{eqnarray*}
+r(k+1)+\sum_{i=1}^{N}x_i(k+1) &=&  \bigg( 1-\sum_{i=1}^{N}\beta_i\bigg) r(k)+\sum_{i=1}^{N} s_i(k) + \sum_{i=1}^{N}\bigg( \beta_i r(k)-s_i(k)+\sum_{j=1}^{N} u_{j,i}(k) \bigg)\\
+&=& r(k)+\sum_{i=1}^{N}x_i(k)
+\end{eqnarray*}
+この式は，タクシーの総数が時間で変動しないことを意味する．もともとタクシーの総数が変化するような制御をかけていないので，この結果は妥当といえる．
+そこで，タクシーの総数を$L$とおくと
+\begin{equation}
+r(k)= L-\sum_{i=1}^{N}x_i(k)
+\end{equation}
+とおける．したがって，式(\ref{eqn:simple_system})は
+\begin{equation}  \label{eqn:simple_system2}
+x_i(k+1)=\beta_i \bigg(L-\sum_{j=1}^{N} x_j(k) \bigg) -s_i(k)+\sum_{j=1}^{N} u_{j,i}(k)
+\end{equation}
+さらに自動車の移動から必ず$0$にしなければならない$u_{i,j}(k)$
+があるはずです．例えば，領域$i$に隣接しない領域$\ell$については
+\begin{equation} \label{eqn:u_seiyaku}
+u_{i, \ell}(k)=0 \qquad  \forall k
+\end{equation}
+とおいてもよい．このような入力は，式(\ref{eqn:simple_system})からはずしておいてよいでしょう．
+
+以上より，タクシーの総数$L$を用いて，制約条件は以下のようになる．
+\begin{eqnarray}
+x_i(k+1) &=& \beta_i \bigg(L-\sum_{j=1}^{N} x_j(k) \bigg) -s_i(k)+\sum_{j=1}^{N} u_{j,i}(k) \\
+d_i(k+1) &=& d_i(k)-s_i(k)+p_i(k)
+\end{eqnarray}
+ここで，時間区間$[k,\ k+1)$の間で実車になる台数$s_i(k)$については以下のように考える．まず，時刻$k$での空車が制御入力に従って，移動してから実車になりうるとする．このとき，時間区間$[k,\ k+1)$の間で実車から空車になるタクシーもすぐに実車になりうるので，時間区間$[k,\ k+1)$の間に領域$i$にいる実車になりうるタクシーの台数は$\beta_i r(k)+\sum_{j=1}^{N}u_{j,i}(k)$であり，実車になる台数はこの数を超えることはないので，
+\begin{equation} \label{eqn:s2}
+s_i(k)=\left\{
+\begin{array}{ll}
+ \alpha_i d_i(k) & \mbox{if }\beta_i \bigg( L-\sum_{j=1}^{N}x_j(k)\bigg) +\sum_{j=1}^{N}u_{j,i}(k) -\alpha_i d_i(k) \geq 0 \\
+\beta_i \bigg( L-\sum_{j=1}^{N}x_j(k)\bigg) +\sum_{j=1}^{N}u_{j,i}(k) & \mbox{otherwise}
+\end{array}\right.
+\end{equation}
+ただし，$\alpha_i$は領域$i$においてタクシーに乗車できる乗客の割合（定数・同定する必要あり．）である．
+ここで，式(\ref{eqn:s2})が条件付きの式になっている．この式は以下のように変形すれは，システム全体はMLD（Mixed Logical Dynamical）システムになる．なお，MLDシステムの性質については松本さんの卒論を見てください．
+
+まず，以下の論理変数$\delta_i(k) \in \{ 0,\ 1\}$を導入する．
+\begin{equation} \label{eqn:delta}
+\delta_i(k)=
+\left\{ \begin{array}{ll}
+1 & \mbox{if }h_i(x_1(k),\ \ldots, x_N(k),\ u_{1,i}(k),\ldots, u_{N,i}(k),d_i(k))\geq 0 \\
+0 & \mbox{otherwise}
+\end{array} \right.
+\end{equation}
+と定義する．ただし，
+\begin{equation} \label{eqn:h}
+h_i(x_1,\  \ldots, x_N,\ u_{1,i},\ldots, u_{N,i},\ d_i)=\beta_i \bigg( L-\sum_{j=1}^{N}x_j\bigg) +\sum_{j=1}^{N}u_{j,i}(k) -\alpha_i d_i
+\end{equation}
+である．このとき，松本さんの卒論の補題2.3(i)から，制約条件式(\ref{eqn:delta})は次の不等式制約条件になる．
+\begin{eqnarray} \label{ineq:delta}
+h^{inf}_{i}(1-\delta_i(k))\leq h_i(k) \leq h^{sup}_{i} \delta_i(k)+(\delta_i(k) -1) \epsilon
+\end{eqnarray}
+ただし$h_i(k)=h_i(x_1(k),\  \ldots, x_N(k),\ u_{1,i}(k),\ldots, u_{N,i}(k),\ d_i(k))$と略記し，$h^{inf}_{i}$, $h^{sup}_{i} \in R$は取りうる任意の$(x_1,\  \ldots, x_N,\ u_{1,i},\ldots, u_{N,i},\ d_i)$に対して$h^{inf}_{i}\leq h_i(x_1,\  \ldots, x_N,\ u_{1,i},\ldots, u_{N,i},\ d_i)\leq h^{sup}_{i}$であり，$\epsilon \in R_{+}$は十分に小さな正の実数である（この数は$i$に独立でよいでしょう．，$h^{inf}_{i}$, $h^{sup}_{i}$も$i$に独立に指定してもよいかもしれません．）．
+
+式(\ref{eqn:s2})は以下のように変形できる．
+\begin{eqnarray}
+s_i(k) &=& \delta_i(k) \alpha_i d_i(k)+(1-\delta_i(k))S_i(k) \\
+	&=& -\delta_i(k)h_i(k)+S_i(k)
+\end{eqnarray}
+ただし，
+\[
+S_i(k)=\beta_i \bigg( L-\sum_{j=1}^{N}x_j(k)\bigg) +\sum_{j=1}^{N}u_{j,i}(k)
+\]
+である．
+ここで，
+\begin{equation} \label{eqn:z}
+z_i(k)=-\delta_i (k) h_i(k) \qquad \bigg( =\delta_i(k) ( -h_i(k)) \bigg)
+\end{equation}
+とおくと，
+\begin{equation} \label{eqn:s_z_x}
+s_i(k)=z_i(k)+S_i(k)
+\end{equation}
+となる，ここで，松本さんの卒論の補題2.3(ii)から，式(\ref{eqn:z})は，
+\begin{eqnarray}
+& -h^{sup}_{i} \delta_i(k) \leq z_i(k) \leq -h^{inf}_{i} \delta_i(k) & \label{ineq:z1}\\
+& -h_i(k)+h^{inf}_i (1-\delta_i(k)) \leq z_i(k) 
+   \leq -h_i(k)+h^{sup}_i (1-\delta_i(k)) & \label{ineq:z2}
+\end{eqnarray}
+と変換できる．
+
+これらの式は線形なので，求める最適化問題は混合整数計画問題（制約条件式が線形の等式または不等式で書かれている．）として定式化できる．
+ \section{結言}
+ \label{sec:3_3}
  \par
  あ
  \include{end}
