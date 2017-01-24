@@ -1,4 +1,4 @@
-\documentclass[a4j,10pt,twocolumn]{paper}
+\documentclass[a4j,9pt,twocolumn]{paper}
 \usepackage{graphicx}
 \usepackage{amsmath}
 
@@ -107,13 +107,19 @@ h_i(k)+\alpha_i d_i(k) & \mbox{otherwise}
  h^{inf}_{i}(1-\delta_i(k))\leq h_i(k) \leq h^{sup}_{i} \delta_i(k)+(\delta_i(k) -1) \epsilon \label{eq:delta_new}
 \end{align}
 ただし，$\epsilon$は十分に小さく，$h^{inf}_{i}\leq h_i(k)\leq h^{sup}_{i}$である．
-論理変数を用いることで式(\ref{eq:s2})は線形の制約条件に変形可能となる．
+論理変数を用いることで式(\ref{eq:s2})は以下の制約条件に変形される．
+\begin{align}
+& s_i(k) = z_i(k)+h_i(k)+\alpha_i d_i(k)\\
+& -h^{sup}_{i} \delta_i(k) \leq z_i(k) \leq -h^{inf}_{i} \delta_i(k)\\
+& -h_i(k)+h^{inf}_i (1-\delta_i(k)) \leq z_i(k) \leq -h_i(k)+h^{sup}_i (1-\delta_i(k))
+\end{align}
 これらの式を制約条件とする最適化問題は混合性数計画問題である．
 
-以上の制約式のもとで，次の目的関数を最小化する有限区間最適化問題を考えた．
+以上の制約式のもとで，時刻$t$において次の目的関数を最小化する有限区間最適化問題を考えた．
 \begin{align}
 \mbox{minimize }J_t=\sum_{i=1}^{N}d_i(t+T) \label{eq:ob_function}
 \end{align}
+ただし，$T$は正の整数である．
 
 
 \section{シミュレーション結果}
