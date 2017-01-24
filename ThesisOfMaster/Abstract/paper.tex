@@ -1,6 +1,9 @@
 \documentclass[a4j,10pt,twocolumn]{paper}
 \usepackage{graphicx}
+\usepackage{amsmath}
+
 \usepackage[varg]{txfonts}
+
 %%% \begin{document}の前に，各エントリーを記述する
 
 \title{タクシーの運転支援システム構築に関する研究}	% 論文のタイトル
@@ -17,19 +20,113 @@
 
 \section{緒論}
 流しのタクシーが効率よく乗客をのせるための支援システムの開発は，運転手の待遇改善に繋がる重要な課題である．
-本報告では，過去の乗車データと現在の流しのタクシーの分布から最適な進行方向を決定する方法を提案する．
-対象領域をいくつかの部分領域に分割し，各部分領域での需要予測をもとに部分領域ごとの流しのタクシーの変化を混合論理ダイナミカルシステムを使ってモデル化する．
-モデル予測を応用して，各部分領域でのタクシーの最適移動分布を求めることで最適な進行方向を決定する．
-\section{問題の定式化}
-対象領域を$N$個の部分領域(あ)（以下セルと呼ぶ）に分割する．
-時刻$k$のときのセル$i$（$i = 1, 2, \ldots, N$）での空車数を$x_i(k)$とおく．
-\section{シミュレーション結果}
+本報告では，過去の乗車データと現在の流しのタクシーの分布から，モデル予測制御を応用して最適な進行方向を決定する方法を提案する．
 
+\section{提案モデル}
+対象領域を$N$個の部分領域（セル）に分割する．
+時刻$k$のときのセル$i$（$i = 1, 2, \ldots, N$）での空車数を$x_i(k)$とおく．
+時間区間$[k,\ k+1)$の間に，領域$i$で実車になるタクシー数を$s_i(k)$，空車になるタクシー数を$e_i(k)$とおく．
+入力として，時間区間$[k,\ k+1)$の間にセル$i$からセル$j$へ移動する空車数を$u_{i, j}(k)$とおく．
+このとき，各セルの空車数のダイナミクスは，
+\begin{align}
+ x_i(k+1) = x_i(k)-s_i(k)+e_i(k)+\sum_{j=1}^{N}\bigg(u_{j,i}(k)-u_{i,j}(k) \bigg) \label{eq:x}
+\end{align}
+となる．
+
+$d_i(k)$を時間区間$[k,\ k+1)$の間にセル$i$で乗車できなかった客数とおくと，
+\begin{align}
+ d_i(k+1) = d_i(k)-s_i(k)+p_i(k)
+\end{align}
+である．
+ただし，$p_i(k)$は時間区間$[k,\ k+1)$の間で発生する新たな乗客数で，過去の乗車データから予測される．
+時間区間$[k,\ k+1)$に間に空車になるタクシー数$e_i(k)$は
+\begin{align}
+ e_i(k)=\beta_{i}r(k) \label{eq:e}
+\end{align}
+とする．
+ただし，$r(k)$は時刻$k$のときの実車の総数で，$\beta_{i}$は過去のデータから推定される実車全体の中でセル$i$で空車になる割合である．
+実車の総数$r(k)$は，式(\ref{eq:e})を用いると
+\begin{align}
+ r(k+1) = \bigg(1-\sum_{i=1}^{N}\beta_i\bigg)r(k)+\sum_{i=1}^{N}s_i(k) \label{eq:r}
+\end{align}
+と表される．
+ここで，入力に関する制約として，各セル$i$について
+\begin{align}
+ x_i(k)=\sum_{j=1}^{N}u_{i,j}(k) \label{eq:input}
+\end{align}
+を与える．
+このように移動する空車数を定めると，式(\ref{eq:x}),\ (\ref{eq:e}),\ (\ref{eq:input})からシステムダイナミクスは
+\begin{align}
+ x_i(k+1)=\beta_i r(k)-s_i(k)+\sum_{j=1}^{N} u_{j,i}(k) \label{eq:simple_system}
+\end{align}
+となる．
+ここで，式(\ref{eq:r}),\ (\ref{eq:input}),\ (\ref{eq:simple_system})からタクシーの総数は変化しないことを示せるので，タクシーの総数を$L$とおくと
+\begin{align}
+ r(k)= L-\sum_{i=1}^{N}x_i(k) \label{eq:r_new}
+\end{align}
+とおける．
+したがって，式(\ref{eq:simple_system})は
+\begin{equation}
+x_i(k+1)=\beta_i \bigg(L-\sum_{j=1}^{N} x_j(k) \bigg) -s_i(k)+\sum_{j=1}^{N} u_{j,i}(k) \label{eq:simple_system2}
+\end{equation}
+となる．
+さらに，時間単位で隣接するセルにしか移動できない制約をつける．
+セル$i$に隣接しないセル$\ell$については
+\begin{align}
+ u_{i, \ell}(k)=0 \qquad  \forall k \label{eq:u_seiyaku}
+\end{align}
+とおく．
+ここで，時間区間$[k,\ k+1)$の間で実車になる台数$s_i(k)$については
+\begin{align}
+ s_i(k)=\left\{
+\begin{array}{ll}
+ \alpha_i d_i(k) & \mbox{if }h_i(k) \geq 0 \\
+h_i(k)+\alpha_i d_i(k) & \mbox{otherwise}
+\end{array}\right. \label{eq:s2}
+\end{align}
+と表すことができる．
+ただし，$\alpha_i$は領域$i$において過去のデータから推定されるタクシーに乗車できる乗客の割合である．
+また，
+\begin{align}
+ h_i(k)=\beta_i \bigg( L-\sum_{j=1}^{N}x_j(k)\bigg) +\sum_{j=1}^{N}u_{j,i}(k) -\alpha_i d_i(k) \label{eq:h}
+\end{align}
+である．
+ここで，式(\ref{eq:s2})は条件付きの式になっているため，ソルバーで扱える形に変形する必要がある．
+
+そのため，以下の論理変数$\delta_i(k) \in \{ 0,\ 1\}$を導入する．
+\begin{align}
+ \delta_i(k)=
+\left\{ \begin{array}{ll}
+1 & \mbox{if }h_i(k)\geq 0 \\
+0 & \mbox{otherwise}
+\end{array} \right. \label{eq:delta}
+\end{align}
+と定義する．
+制約条件式(\ref{eq:delta})は次の不等式制約条件になる．
+\begin{align}
+ h^{inf}_{i}(1-\delta_i(k))\leq h_i(k) \leq h^{sup}_{i} \delta_i(k)+(\delta_i(k) -1) \epsilon \label{eq:delta_new}
+\end{align}
+ただし，$\epsilon$は十分に小さく，$h^{inf}_{i}\leq h_i(k)\leq h^{sup}_{i}$である．
+論理変数を用いることで式(\ref{eq:s2})は線形の制約条件に変形可能となる．
+これらの式を制約条件とする最適化問題は混合性数計画問題である．
+
+以上の制約式のもとで，次の目的関数を最小化する有限区間最適化問題を考えた．
+\begin{align}
+\mbox{minimize }J_t=\sum_{i=1}^{N}d_i(t+T) \label{eq:ob_function}
+\end{align}
+
+
+\section{シミュレーション結果}
+実データを用いてシミュレーションを行い，乗客獲得のために貪欲に運行した場合と提案法に基づいて運行した場合との乗車できなかった乗客数の比較を行った．
+
+図
+
+提案法のほうが合理的な運行法であることがわかる．
 %\bibliographystyle{junsrt}
 %\bibliography{refs}
-\begin{thebibliography}{1}
-\bibitem{}
-\end{thebibliography}
+% \begin{thebibliography}{1}
+% \bibitem{1}F. Miao, et al., “Taxi Dispatch with Real-Time Sensing Data in Metropolitan Areas- a Receding Horizon Control Approach.”,  Proceedings of ICCPS 2015, pp. 100-109, 2015
+% \end{thebibliography}
 \newpage
 \pagebreak
 \end{document}
