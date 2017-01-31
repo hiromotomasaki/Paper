@@ -6,5 +6,60 @@
 \include{begin}
 \appendix
 \chapter{混合論理動的システム}
+\par
+ 混合論理動的システム(以下MLDシステムと呼ぶ)モデルは
+\begin{align}
+ \begin{cases}
+  x(k+1) = Ax(k)+B_1u(k)+B_2z(k)+B_3\delta(k)\\
+  Cx(k)+D_1u(k)+D_2z(k)+D_3\delta(k)\leq D_4
+ \end{cases}
+\end{align}
+で与えられる．
+ここで，$x(k)\in\mathbb{R}^n$は状態，$u(k)\in\mathbb{R}^m$は入力，$z(k)\in\mathbb{R}^{l_1}$と$\delta(k)\in\{0,\ 1\}^{l_2}$は補助変数である．
+また，$A\in\mathbb{R}^{n\times n}$，$B_1\in\mathbb{R}^{n\times m}$，$B_2\in\mathbb{R}^{n\times l_1}$，$B_3\in\mathbb{R}^{n\times l_2}$，$C\in\mathbb{R}^{q\times n}$，$D_1\in\mathbb{R}^{q\times m}$，$D_2\in\mathbb{R}^{q\times l_1}$，$D_3\in\mathbb{R}^{q\times l_2}$，$D_4\in\mathbb{R}^{q}$は定数行列である．
+補助変数$\delta$は，このモデルの離散状態を表している．
+
+\par
+バイナリ変数と論理積，論理和，否定などの論理演算を含む命題論理は，バイナリ変数と四則演算からなる線形不等式で表現できる．
+例えば，命題$i$の真偽を表す変数を論理変数と呼び，$X_i\in\{0,\ 1\}$で表す．
+そして，$X_i$を命題「$\delta_i=1$である」と対応付け，$X_i=[\delta_i=1]$と表現することにする．
+すると，各論理演算について以下の補題が成り立つ．
+\lemma{}
+\ 
+\begin{enumerate}
+ \item $[\delta_1=1] \lor [\delta_2=1]\ (=X_1 \lor X_2)$と$\delta_1+\delta_2\geq 1$は等価である．
+ \item $[\delta_1=1] \land [\delta_2=1]\ (=X_1 \land X_2)$と$\delta_1=1$，$\delta_2=1$は等価である．
+ \item $[\delta_1=1] \to [\delta_2=1]\ (=X_1 \to X_2)$と$\delta_1-\delta_2\leq 0$は等価である．
+ \item $[\delta_1=1] \leftrightarrow [\delta_2=1]\ (=X_1 \leftrightarrow X_2)$と$\delta_1-\delta_2 = 0$は等価である．
+ \item $[\delta_1=1] \oplus [\delta_2=1]\ (=X_1 \oplus X_2)$と$\delta_1+\delta_2 = 1$は等価である．
+\end{enumerate}
+
+最後に本論文で利用した，連続値変数を含む場合の論理条件の不等式表現について補題を示す．
+\lemma{}
+$\delta\in\{0,\ 1\}$をインデックス変数，$x\in\mathbb{R}^n$を連続値変数とする．
+このとき，関数$h\ :\ \mathbb{R}^{n}\to\mathbb{R}$，$g\ :\ \mathbb{R}^{n}\to\mathbb{R}^{m}$に対して，有界集合$\mathbb{X}\subset\mathbb{R}^{n}$上で次の関係が成り立つ．
+\begin{enumerate}
+ \item $[\delta_1=1] \leftrightarrow [h(x)\geq 0]$は，つぎの線形不等式によって任意の精度で近似できる．
+\begin{align}
+  h_{\inf}(1-\delta)\leq h(x)\leq h_{\sup}(\delta-1)\epsilon
+\end{align}
+ただし，$h_{\inf}$，$h_{\sup}\in\mathbb{R}$はすべての$x\in\mathbb{X}$に対して$h_{\inf}\leq h(x)\leq h_{\sup}$を満たすものであり，$\epsilon\in\mathbb{R}_{++}$は任意に選ばれた十分小さい定数である．
+ \item $z=\delta g(x)$はつぎの不等式と等価である．
+\begin{align}
+  g_{\inf}\delta\leq z\leq g_{\sup}\delta
+\end{align}
+\begin{align}
+  g(x)-g_{\sup}(1-\delta)\leq z\leq g(x)-g_{\inf}(1-\delta)
+\end{align}
+\end{enumerate}
+ただし，$g_{\inf}$，$g_{\sup}\in\mathbb{R}^{m}$はすべての$x\in\mathbb{X}$に対して$g_{\inf}\leq g(x)\leq g_{\sup}$を満たすベクトルである．
 \chapter{モデル予測制御}
+\par
+モデル予測制御は現時点から有限区間内の制約条件がシステムのダイナミクスとなっている数理計画問題を解き，得られた有限区間の入力のうち初期入力の1ステップ分のみを制御入力として利用し，各時刻でこれを繰り返し制御を行う方法である．
+モデル予測制御は現時点から$T$ステップ先のシステムの状態量を数理計画問題を解くことで予測するため，有限区間の終端時刻$T$は予測ステップ数と呼ばれる．
+
+\par
+モデル予測制御には計算時間に関する課題がある．
+まず，モデル予測制御を実装するには各時刻でのシステムの状態を計測したら即座に最適制御問題を解いて制御入力を決定する必要がある．
+したがって，最適制御問題の数値解法は時刻の時間単位内に終わる必要がある．
 \include{end}
