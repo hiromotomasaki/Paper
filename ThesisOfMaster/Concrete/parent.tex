@@ -4,14 +4,11 @@
 % 目次
 % 第1章（緒論 ）
 % 第2章（システム構成 ）
-% 第3章（モデル予測制御 ）
-% 第4章（需要予測）
-% 第5章（結論）
+% 第3章（システム制御 ）
+% 第4章（結論）
 % 謝辞
 % 参考文献
 % 付録
-
-% 第2章は大雑把にこうだったらいいなを書く
 
 %卒業論文用雛形
 \documentclass[a4j,12pt,oneside,openany]{jsbook}
@@ -35,11 +32,14 @@
 \tableofcontents
 
 \mainmatter
+% 1章：緒論
 \input{chapter1}
+% 2章：システム構成
 \input{chapter2}
+% 3章：モデル予測制御
 \input{chapter3}
+% 結論
 \input{chapter4}
-\input{chapter5}
 
 % 謝辞
 \input{acknowledgement}
@@ -47,15 +47,28 @@
 % 参考文献
 % 1. 直接書く
 \begin{thebibliography}{99}
-\bibitem{a} Reference 1
-\bibitem{b} Reference 2
+\bibitem{bib1} 山本俊行, K. Liu，森川高行, “タクシー配車データのプローブデータとしての活用に関する基礎的分析,” 土木計画学研究・論文集，Vol. 23, No. 4, pp. 863-870, 2006.
+\bibitem{bib2} 金月寛彰，服部宏充，“プローブカーデータを利用したタクシードライバーの個人特性の分析とモデル化,” 第29 回人工知能学会全国大会, 演題番号1N4-4, 2015.
+\bibitem{bib3} K. Zhao, S. Tarkoma, S. Liu, and H. Vo, “Urban HumaMobility Data Mining: An Overview,” in Proc. 2016 IEEE International Conference on Big Data, 2016.
+\bibitem{bib4} K. Zhao, D. Khryashchev, J. Freire, C. Silva, and H. Vo, “Predicting Taxi Demand at High Spatial Resolution: Approaching the Limit of Predictability,” in Proc. 2016 IEEE International Conference on Big Data, 2016.
+\bibitem{bib5} K. T. Seow, N. H. Dang, and D.-H. Lee, “A Collaborativ Multiagent Taxi-Dispatch System,” IEEE Trans. Automation Science and Engineering, Vol. 7, No. 3, pp. 607-616 ,2010.
+\bibitem{bib6} M. Qu, H. Zhu, J. Liu, G. Liu, and H. Xiong, “A CostEffective Recommender System for Taxi Drivers,” in Proc. 20th International Conference on KDD, pp. 45-54, 2014.
+\bibitem{bib7} F. Miao, S. Lin, S. Munir, J. A. Stankovic, H. Huang, D. Zhang, T. He, G. J. Pappas, “Dispatch with Real-Time Sensing Data in Metropolitan Areas - A Receding Horizon Control Approach,” in Proc. International Conference on Cyber-Physical Systems, pp. 100-109, 2015.
+\bibitem{bib8} F. Miao, S. Han S. Lin, and G. J. Pappas, “Robust Tax Dispatch under Model Uncertainties,” in Proc. 54th IEEE Conference on Decision and Control, pp. 2816-2821, 2015.
+\bibitem{bib9} F. MIao, S. Han, S. Lin, Q. Wang, J. Stankovic, A. Hendawi, D. Zhangm T. He, and G. Pappas, “Data-Driven Robust Taxi Dispatch under Demand Uncertainties,” arXiv:1603.06263, 2016.
+\bibitem{bib10} A. Bemporad and M. Morari, “Control of Systems Integratin Logic, Dynamics, and Constraints,” Automatica, Vol.35, No. 3, pp. 407-427, 1999.
+\bibitem{bib11} 井村順一，東俊一，増淵泉，ハイブリッドシステムの制御，コロナ社，2014.
 \end{thebibliography}
+
 % % 2. bibtexを使う
 % \bibliography{myjunsrt}
 % \bibliography{refs}
 
 % 付録
 \input{appendix}
+
+% 研究業績
+\input{researchResult}
 
 \input{end}
 
